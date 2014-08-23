@@ -1,0 +1,3 @@
+[submodule "testdata/case/twitter-text-dart"]
+	path = testdata/case/twitter-text-dart
+	url = https://github.com/financeCoding/twitter-text-dart.git
