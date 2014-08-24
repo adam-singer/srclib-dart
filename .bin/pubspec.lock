@@ -5,10 +5,14 @@ packages:
     description: analyzer
     source: hosted
     version: "0.22.2"
+  ansicolor:
+    description: ansicolor
+    source: hosted
+    version: "0.0.9"
   args:
     description: args
     source: hosted
-    version: "0.12.0+1"
+    version: "0.11.0+1"
   collection:
     description: collection
     source: hosted
@@ -45,10 +49,18 @@ packages:
     description: matcher
     source: hosted
     version: "0.11.1"
+  mockable_filesystem:
+    description: mockable_filesystem
+    source: hosted
+    version: "0.0.1"
   path:
     description: path
     source: hosted
     version: "1.3.0"
+  quiver:
+    description: quiver
+    source: hosted
+    version: "0.18.2"
   scheduled_test:
     description: scheduled_test
     source: hosted
@@ -77,6 +89,10 @@ packages:
     description: unittest
     source: hosted
     version: "0.11.0+5"
+  unscripted:
+    description: unscripted
+    source: hosted
+    version: "0.4.2"
   watcher:
     description: watcher
     source: hosted
