@@ -1,0 +1,3 @@
+library ref;
+
+class Ref {}

@@ -1,0 +1,3 @@
+library doc;
+
+class Doc {}
