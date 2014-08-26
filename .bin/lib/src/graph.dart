@@ -1,0 +1,3 @@
+library graph;
+
+class Graph {}
