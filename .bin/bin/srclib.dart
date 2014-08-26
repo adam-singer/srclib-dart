@@ -1,8 +1,5 @@
 #!/usr/bin/env dart
 
-// TODO(adam): consider using this as the actual driver and the top level 
-// `srclib-dart` script as a simple redirecting script
-
 import 'dart:io';
 import 'dart:convert' show JSON;
 
@@ -10,16 +7,15 @@ import 'package:unscripted/unscripted.dart';
 import 'package:logging/logging.dart';
 
 class SrcLibDriver {
-  File logFile;
-  Logger logger = new Logger("SrcLibDriver");
+  final File _logFile = new File("/tmp/srclib.dart.log");
+  final Logger _logger = new Logger("SrcLibDriver");
   
   @Command(help: '')
   SrcLibDriver() {
     // TODO(adam): remove when better logging happens. 
-    logFile = new File("/tmp/srclib.dart.log");
-    logFile.open(mode: FileMode.WRITE);
-    logger.onRecord.listen((LogRecord r) {
-      logFile.writeAsStringSync("${r.toString()}\n");
+    _logFile.open(mode: FileMode.WRITE);
+    _logger.onRecord.listen((LogRecord r) {
+      _logFile.writeAsStringSync("${r.toString()}\n");
     });
   }
   
@@ -35,9 +31,9 @@ class SrcLibDriver {
      'the entire repository)""")
         String subdir: ''}) {
     // depresolve expects json list
-    logger.info("subdir = ${subdir}");
-    logger.info("repo = ${repo}");
-    logger.info("cwd = " + Directory.current.absolute.path);
+    _logger.info("subdir = ${subdir}");
+    _logger.info("repo = ${repo}");
+    _logger.info("cwd = " + Directory.current.absolute.path);
     
     print('{}');
   }
