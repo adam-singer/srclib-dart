@@ -3,11 +3,25 @@
 // TODO(adam): consider using this as the actual driver and the top level 
 // `srclib-dart` script as a simple redirecting script
 
+import 'dart:io';
+import 'dart:convert' show JSON;
+
 import 'package:unscripted/unscripted.dart';
+import 'package:logging/logging.dart';
 
 class SrcLibDriver {
+  File logFile;
+  Logger logger = new Logger("SrcLibDriver");
+  
   @Command(help: '')
-  SrcLibDriver();
+  SrcLibDriver() {
+    // TODO(adam): remove when better logging happens. 
+    logFile = new File("/tmp/srclib.dart.log");
+    logFile.open(mode: FileMode.WRITE);
+    logger.onRecord.listen((LogRecord r) {
+      logFile.writeAsStringSync("${r.toString()}\n");
+    });
+  }
   
   @SubCommand(help: 'Tools that perform the scan operation are called scanners. '
     'They scan a directory tree and produce a JSON array of source units ' 
@@ -20,7 +34,12 @@ class SrcLibDriver {
      'scanned (this is typically the root, ".", as it is most useful to scan '
      'the entire repository)""")
         String subdir: ''}) {
-    print('');
+    // depresolve expects json list
+    logger.info("subdir = ${subdir}");
+    logger.info("repo = ${repo}");
+    logger.info("cwd = " + Directory.current.absolute.path);
+    
+    print('{}');
   }
     
   @SubCommand(help: 'Tools that perform the dep operation are called dependency'
@@ -28,7 +47,8 @@ class SrcLibDriver {
     'of a dependency package, into a full specification of the dependency\'s '
     'target.')
   depresolve() {
-    print('');
+    // depresolve expects json list 
+    print('[]');
   }
   
   @SubCommand(help: 'Tools that perform the graph operation are called graphers.'
@@ -37,13 +57,15 @@ class SrcLibDriver {
     'and type inference. Graphers perform these operations on a source unit and'
     ' have read access to all of the source unit\'s files.')
   graph() {
-    print('');
+    // depresolve expects json map
+    print('{}');
   }
   
   @SubCommand(help: 'This command for human-readable info describing the '
     'version, author, etc. (free-form)')
   info() {
-    print('');
+    print(JSON.encode({"author": "Adam Singer <financecoding@gmail.com>", 
+      "version": "0.0.1-dev"}));
   }
 }
 
