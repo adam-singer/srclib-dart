@@ -13,6 +13,8 @@ class SrcLibDriver {
   final File _logFile = new File("/tmp/srclib.dart.log");
   final Logger _logger = new Logger("SrcLibDriver");
   final List<String> _stdinLines = new List<String>();
+  String _info = JSON.encode({"author": "Adam Singer <financecoding@gmail.com>", 
+    "version": "0.0.1-dev"});
   
   @Command(help: '')
   SrcLibDriver() {
@@ -26,6 +28,13 @@ class SrcLibDriver {
   Stream _readLine() => stdin
     .transform(UTF8.decoder)
     .transform(new LineSplitter());
+  
+  void _processInput(Function onDone) {
+    _readLine().listen(_stdinLines.add,
+        onError: (error) => _logger.severe(error.toString()), 
+        onDone: onDone, 
+        cancelOnError: true); 
+  }
   
   @SubCommand(help: 'Tools that perform the scan operation are called scanners. '
     'They scan a directory tree and produce a JSON array of source units ' 
@@ -49,11 +58,8 @@ class SrcLibDriver {
       Scan scan = new Scan(Uri.parse(repo), subdir, config);
       print('{}');
     }
-
-    _readLine().listen(_stdinLines.add,
-        onError: (error) => _logger.severe(error.toString()), 
-        onDone: startScan, 
-        cancelOnError: true);    
+    
+    _processInput(startScan);   
   }
     
   @SubCommand(help: 'Tools that perform the dep operation are called dependency'
@@ -68,10 +74,7 @@ class SrcLibDriver {
       print('[]');
     }
 
-    _readLine().listen(_stdinLines.add,
-        onError: (error) => _logger.severe(error.toString()), 
-        onDone: startDepresolve, 
-        cancelOnError: true); 
+    _processInput(startDepresolve);
   }
   
   @SubCommand(help: 'Tools that perform the graph operation are called graphers.'
@@ -87,18 +90,13 @@ class SrcLibDriver {
       print('{}');
     }
 
-    _readLine().listen(_stdinLines.add,
-        onError: (error) => _logger.severe(error.toString()), 
-        onDone: startGraph, 
-        cancelOnError: true); 
+    _processInput(startGraph);
   }
   
   @SubCommand(help: 'This command for human-readable info describing the '
     'version, author, etc. (free-form)')
-  info() {
-    print(JSON.encode({"author": "Adam Singer <financecoding@gmail.com>", 
-      "version": "0.0.1-dev"}));
-  }
+  info() => print(_info);
+  
 }
 
 void main(arguments) => declare(SrcLibDriver).execute(arguments);
