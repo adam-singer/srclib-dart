@@ -1,14 +1,18 @@
 #!/usr/bin/env dart
 
+import 'dart:async';
 import 'dart:io';
-import 'dart:convert' show JSON;
+import 'dart:convert' show JSON, UTF8, LineSplitter;
 
 import 'package:unscripted/unscripted.dart';
 import 'package:logging/logging.dart';
 
+import 'package:srclib_dart/srclib.dart';
+
 class SrcLibDriver {
   final File _logFile = new File("/tmp/srclib.dart.log");
   final Logger _logger = new Logger("SrcLibDriver");
+  final List<String> _stdinLines = new List<String>();
   
   @Command(help: '')
   SrcLibDriver() {
@@ -18,6 +22,10 @@ class SrcLibDriver {
       _logFile.writeAsStringSync("${r.toString()}\n");
     });
   }
+  
+  Stream _readLine() => stdin
+    .transform(UTF8.decoder)
+    .transform(new LineSplitter());
   
   @SubCommand(help: 'Tools that perform the scan operation are called scanners. '
     'They scan a directory tree and produce a JSON array of source units ' 
@@ -35,7 +43,17 @@ class SrcLibDriver {
     _logger.info("repo = ${repo}");
     _logger.info("cwd = " + Directory.current.absolute.path);
     
-    print('{}');
+    void startScan() {
+      Map config = JSON.decode(_stdinLines.join());
+      _logger.info("repositoryConfig = ${config}");
+      Scan scan = new Scan(Uri.parse(repo), subdir, config);
+      print('{}');
+    }
+
+    _readLine().listen(_stdinLines.add,
+        onError: (error) => _logger.severe(error.toString()), 
+        onDone: startScan, 
+        cancelOnError: true);    
   }
     
   @SubCommand(help: 'Tools that perform the dep operation are called dependency'
@@ -44,7 +62,16 @@ class SrcLibDriver {
     'target.')
   depresolve() {
     // depresolve expects json list 
-    print('[]');
+    void startDepresolve() {
+      Map sourceUnit = JSON.decode(_stdinLines.join());
+      _logger.info("sourceUnit = ${sourceUnit}");
+      print('[]');
+    }
+
+    _readLine().listen(_stdinLines.add,
+        onError: (error) => _logger.severe(error.toString()), 
+        onDone: startDepresolve, 
+        cancelOnError: true); 
   }
   
   @SubCommand(help: 'Tools that perform the graph operation are called graphers.'
@@ -53,8 +80,17 @@ class SrcLibDriver {
     'and type inference. Graphers perform these operations on a source unit and'
     ' have read access to all of the source unit\'s files.')
   graph() {
-    // depresolve expects json map
-    print('{}');
+    // graph expects json map
+    void startGraph() {
+      Map sourceUnit = JSON.decode(_stdinLines.join());
+      _logger.info("sourceUnit = ${sourceUnit}");
+      print('{}');
+    }
+
+    _readLine().listen(_stdinLines.add,
+        onError: (error) => _logger.severe(error.toString()), 
+        onDone: startGraph, 
+        cancelOnError: true); 
   }
   
   @SubCommand(help: 'This command for human-readable info describing the '
@@ -65,4 +101,4 @@ class SrcLibDriver {
   }
 }
 
-main(arguments) => declare(SrcLibDriver).execute(arguments);
+void main(arguments) => declare(SrcLibDriver).execute(arguments);

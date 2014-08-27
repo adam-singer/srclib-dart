@@ -1,3 +1,0 @@
-library scanner;
-
-class Scanner {}
