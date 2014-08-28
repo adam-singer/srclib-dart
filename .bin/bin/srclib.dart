@@ -56,6 +56,7 @@ class SrcLibDriver {
       Map config = JSON.decode(_stdinLines.join());
       _logger.info("repositoryConfig = ${config}");
       Scan scan = new Scan(Uri.parse(repo), subdir, config);
+      scan.run();
       print('{}');
     }
     

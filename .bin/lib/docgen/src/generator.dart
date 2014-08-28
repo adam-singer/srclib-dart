@@ -322,6 +322,10 @@ String _obtainPackageRoot(String packageRoot, bool parseSdk,
   return path.normalize(path.absolute(packageRoot));
 }
 
+List<Uri> findLibrariesToDocument(List<String> args, bool
+    includeDependentPackages) => _findLibrariesToDocument(args,
+        includeDependentPackages);
+
 /// Given the user provided list of items to document, expand all directories
 /// to document out into specific files and add any dependent packages for
 /// documentation if desired.

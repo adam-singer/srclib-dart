@@ -25,7 +25,7 @@ class SourceUnit {
   List<String> globs;
 
   // Files is all of the files that make up this source unit.
-  List<String> files;
+  List<Uri> files;
 
   // Dir is the root directory of this source unit. It is optional and maybe
   // empty.
@@ -41,7 +41,7 @@ class SourceUnit {
   // dependency resolution on these entries. This is because the scanner is
   // run frequently and should execute very quickly, and dependency resolution
   // is often slow (requiring network access, etc.).
-  List<String> dependencies;
+  List<Map> dependencies;
 
   // Info is an optional field that contains additional information used to
   // display the source unit
