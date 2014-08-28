@@ -18,7 +18,7 @@ import "package:stack_trace/stack_trace.dart";
 import 'exceptions.dart';
 import 'log.dart' as log;
 
-export '../../asset/dart/utils.dart';
+export '../asset/dart/utils.dart';
 
 /// A pair of values.
 class Pair<E, F> {
