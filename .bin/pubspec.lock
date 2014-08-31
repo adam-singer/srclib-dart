@@ -48,6 +48,10 @@ packages:
       url: "https://github.com/financeCoding/http_throttle.git"
     source: git
     version: "1.0.0"
+  jsonx:
+    description: jsonx
+    source: hosted
+    version: "1.2.7"
   logging:
     description: logging
     source: hosted

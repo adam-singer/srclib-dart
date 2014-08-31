@@ -2,3 +2,4 @@
 .bin/test/docgen/packages
 .bin/packages
 .bin/test/packages
+.bin/test/src/packages

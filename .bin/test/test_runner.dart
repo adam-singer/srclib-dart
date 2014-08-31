@@ -1,7 +1,7 @@
 library test_runner;
 
-import "package:unittest/unittest.dart";
+import 'src/object_encoder.dart' as object_encoder;
 
 void main() {
-
+  object_encoder.main();
 }
