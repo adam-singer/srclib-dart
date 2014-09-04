@@ -1,5 +1,8 @@
 library defkey;
 
+import "package:srclib_dart/src/srclib_encoder.dart" show jsonObject, 
+                                                          jsonProperty;
+
 // DefKey specifies a definition, either concretely or abstractly. A concrete
 // definition key has a non-empty CommitID and refers to a definition defined in a
 // specific commit. An abstract definition key has an empty CommitID and is
@@ -10,6 +13,7 @@ library defkey;
 // are referring to a definition that may or may not exist at various times. With a
 // non-empty CommitID, you are referring to a specific definition of a definition at
 // the time specified by the CommitID.
+@jsonObject
 class Defkey {
   // Repo is the VCS repository that defines this definition. Its Elasticsearch mapping is defined
   // separately.
@@ -22,11 +26,11 @@ class Defkey {
 
   // UnitType is the type name of the source unit (obtained from unit.Type(u))
   // that this definition was defined in.
-  String unitType;
+  @jsonProperty String unitType;
 
   // Unit is the name of the source unit (obtained from u.Name()) that this
   // definition was defined in.
-  String unit;
+  @jsonProperty String unit;
 
   // Path is a unique identifier for the def, relative to the source unit.
   // It should remain stable across commits as long as the def is the
@@ -39,5 +43,5 @@ class Defkey {
   // the Path, but this may not always be the case. I.e., don't rely on Path
   // to find parents or children or any other structural propreties of the
   // def hierarchy). See Def.TreePath instead.
-  String defPath;
+  @jsonProperty String defPath;
 }

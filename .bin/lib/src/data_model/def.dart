@@ -1,11 +1,14 @@
 library def;
 
+import "package:srclib_dart/src/srclib_encoder.dart" show jsonObject, 
+                                                          jsonProperty;
+@jsonObject
 class Def {
   // SID is a unique, sequential ID for a def. It is regenerated each time
   // the def is emitted by the grapher and saved to the database. The SID
   // is used as an optimization (e.g., joins are faster on SID than on
   // DefKey).
-  int SID;
+  @jsonProperty int SID;
 
   // DefKey is the natural unique key for a def. It is stable
   // (subsequent runs of a grapher will emit the same defs with the same
@@ -25,30 +28,30 @@ class Def {
   // tree-path for some def.
   // The following regex captures the children of a tree-path X: X(/-[^/]*)*(/[^/-][^/]*)
   //TreePath TreePath `db:"treepath" json:",omitempty"`
-  String treePath; // TODO: could make this a structured type.
+  @jsonProperty String treePath; // TODO: could make this a structured type.
 
   // Kind is the language-independent kind of this def.
-  String kind;
+  @jsonProperty String kind;
 
-  String name;
+  @jsonProperty String name;
 
   // Callable is true if this def may be called or invoked, such as in the
   // case of functions or methods.
-  bool callable;
+  @jsonProperty bool callable;
 
-  String file;
+  @jsonProperty String file;
 
-  int defStart;
-  int defEnd;
+  @jsonProperty int defStart;
+  @jsonProperty int defEnd;
 
-  bool exported;
+  @jsonProperty bool exported;
 
   // Test is whether this def is defined in test code (as opposed to main
   // code). For example, definitions in Go *_test.go files have Test = true.
-  bool test;
+  @jsonProperty bool test;
 
   // Data contains additional language- and toolchain-specific information
   // about the def. Data is used to construct function signatures,
   // import/require statements, language-specific type descriptions, etc.
-  String data; // TODO: Could be a map or dynamic
+  @jsonProperty String data; // TODO: Could be a map or dynamic
 }
