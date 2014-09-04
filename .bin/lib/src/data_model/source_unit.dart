@@ -1,6 +1,7 @@
 library source_unit;
 
-import "package:jsonx/jsonx.dart" show jsonObject, jsonProperty;
+import "package:srclib_dart/src/srclib_encoder.dart" show jsonObject, 
+                                                          jsonProperty;
 
 @jsonObject
 class SourceUnit {
@@ -18,7 +19,7 @@ class SourceUnit {
   // Repo is the URI of the repository containing this source unit, if any.
   // The scanner tool does not need to set this field - it can be left blank,
   // to be filled in by the `src` tool
-  @jsonProperty Uri repo;
+  @jsonProperty String repo;
 
   // Globs is a list of patterns that match files that make up this source
   // unit. It is used to detect when the source unit definition is out of date
@@ -28,7 +29,7 @@ class SourceUnit {
   @jsonProperty List<String> globs;
 
   // Files is all of the files that make up this source unit.
-  @jsonProperty List<Uri> files;
+  @jsonProperty List<String> files;
 
   // Dir is the root directory of this source unit. It is optional and maybe
   // empty.

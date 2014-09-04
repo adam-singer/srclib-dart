@@ -1,6 +1,7 @@
 library object_encoder;
 
 import "package:jsonx/jsonx.dart" as jsonx;
+export "package:jsonx/jsonx.dart" show jsonObject, jsonProperty;
 
 class SrcLibEncoder {
   String _toSrcLibCase(String input) =>

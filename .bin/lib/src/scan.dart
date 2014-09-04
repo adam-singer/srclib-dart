@@ -16,7 +16,11 @@ class Scan {
   }
   
   run() {
-    sourceUnit.files = docgen_generator.findLibrariesToDocument([subdirectoryPath], false);
+    sourceUnit.files = docgen_generator
+        .findLibrariesToDocument([subdirectoryPath], false)
+        .map((Uri uri) => uri.toString()).toList();
+    
+    
   }
   
 }  
