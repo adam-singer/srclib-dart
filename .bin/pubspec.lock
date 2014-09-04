@@ -4,7 +4,7 @@ packages:
   analyzer:
     description: analyzer
     source: hosted
-    version: "0.22.2"
+    version: "0.22.4"
   ansicolor:
     description: ansicolor
     source: hosted
@@ -40,7 +40,7 @@ packages:
   http_parser:
     description: http_parser
     source: hosted
-    version: "0.0.2+4"
+    version: "0.0.2+5"
   http_throttle:
     description:
       ref: null
@@ -87,11 +87,11 @@ packages:
   scheduled_test:
     description: scheduled_test
     source: hosted
-    version: "0.11.2"
+    version: "0.11.2+1"
   shelf:
     description: shelf
     source: hosted
-    version: "0.5.4+2"
+    version: "0.5.4+3"
   source_span:
     description: source_span
     source: hosted
@@ -123,4 +123,4 @@ packages:
   yaml:
     description: yaml
     source: hosted
-    version: "2.0.0"
+    version: "2.0.1+1"
