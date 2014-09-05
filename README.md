@@ -16,3 +16,7 @@ The `src` tool does not support printing fully to standard out for the failed pa
 ```
 –(~/dart/srclib-dart)–($ /Users/adam/.srclib/github.com/financeCoding/srclib-dart/.bin/srclib-dart scan --repo github.com/financeCoding/twitter-text-dart --subdir /Users/adam/dart/srclib-dart/testdata/case/twitter-text-dart/
 ```
+
+```
+–(~/dart/srclib-dart/.bin)–($ /Users/adam/.srclib/github.com/financeCoding/srclib-dart/.bin/srclib-dart scan --repo github.com/financeCoding/twitter-text-dart --subdir /Users/adam/dart/srclib-dart/testdata/case/twitter-text-dart/ --test-data-file test/data_files/empty_scan_input.json
+```

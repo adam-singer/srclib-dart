@@ -3,3 +3,4 @@
 .bin/packages
 .bin/test/packages
 .bin/test/src/packages
+.bin/.pub
