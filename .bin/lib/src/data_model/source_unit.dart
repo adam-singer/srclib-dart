@@ -3,6 +3,8 @@ library source_unit;
 import "package:srclib_dart/src/srclib_encoder.dart" show jsonObject, 
                                                           jsonProperty;
 
+export "package:srclib_dart/src/srclib_encoder.dart" show srcLibEncoder;
+
 @jsonObject
 class SourceUnit {
   // Name is an opaque identifier for this source unit that MUST be unique

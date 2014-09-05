@@ -20,3 +20,5 @@ class SrcLibEncoder {
   dynamic decode(String text, Type type) => jsonx.decode(text, type: type);
 }
 
+final SrcLibEncoder srcLibEncoder = new SrcLibEncoder();
+

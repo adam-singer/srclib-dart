@@ -18,9 +18,8 @@ class SrcLibDriver {
   
   @Command(help: '')
   SrcLibDriver() {
-    // TODO(adam): remove when better logging happens. 
     _logFile.open(mode: FileMode.WRITE);
-    _logger.onRecord.listen((LogRecord r) {
+    Logger.root.onRecord.listen((LogRecord r) {
       _logFile.writeAsStringSync("${r.toString()}\n");
     });
   }
@@ -36,6 +35,13 @@ class SrcLibDriver {
         cancelOnError: true); 
   }
   
+  void _processFile(String filePath, Function onDone) {
+    File file = new File(filePath);
+    String data = file.readAsStringSync();
+    _stdinLines.add(data);
+    onDone();
+  }
+  
   @SubCommand(help: 'Tools that perform the scan operation are called scanners. '
     'They scan a directory tree and produce a JSON array of source units ' 
     '(in Go, []*unit.SourceUnit) they encounter.')
@@ -46,7 +52,10 @@ class SrcLibDriver {
      'scanner is run), relative to the root directory of the repository being '
      'scanned (this is typically the root, ".", as it is most useful to scan '
      'the entire repository)""")
-        String subdir: ''}) {
+        String subdir: '',
+        @Option(help: 'Override reading stdin and use a test data file.')
+        String testDataFile: null}) {
+    
     // depresolve expects json list
     _logger.info("subdir = ${subdir}");
     _logger.info("repo = ${repo}");
@@ -56,18 +65,27 @@ class SrcLibDriver {
       Map config = JSON.decode(_stdinLines.join());
       _logger.info("repositoryConfig = ${config}");
       Scan scan = new Scan(Uri.parse(repo), subdir, config);
-      scan.run();
-      print('{}');
+      String result = scan.execute();
+      stdout.write(result);
+      stdout.flush().then((_) => stdout.close());
     }
     
-    _processInput(startScan);   
+    if (testDataFile == null) {
+      _processInput(startScan);
+    } else {
+      _logger.warning("using test data file ");
+      _processFile(testDataFile, startScan);
+    }
+    
+    
   }
     
   @SubCommand(help: 'Tools that perform the dep operation are called dependency'
     ' resolvers. They resolve "raw" dependencies, such as the name and version '
     'of a dependency package, into a full specification of the dependency\'s '
     'target.')
-  depresolve() {
+  depresolve({@Option(help: 'Override reading stdin and use a test data file.')
+    String testDataFile: null}) {
     // depresolve expects json list 
     void startDepresolve() {
       Map sourceUnit = JSON.decode(_stdinLines.join());
@@ -75,7 +93,13 @@ class SrcLibDriver {
       print('[]');
     }
 
-    _processInput(startDepresolve);
+    if (testDataFile == null) {
+      _processInput(startDepresolve);
+    } else {
+      _logger.warning("using test data file ");
+      _processFile(testDataFile, startDepresolve);
+    }
+    
   }
   
   @SubCommand(help: 'Tools that perform the graph operation are called graphers.'
@@ -83,7 +107,8 @@ class SrcLibDriver {
     'they perform a combination of parsing, static analysis, semantic analysis, '
     'and type inference. Graphers perform these operations on a source unit and'
     ' have read access to all of the source unit\'s files.')
-  graph() {
+  graph({@Option(help: 'Override reading stdin and use a test data file.')
+    String testDataFile: null}) {
     // graph expects json map
     void startGraph() {
       Map sourceUnit = JSON.decode(_stdinLines.join());
@@ -91,7 +116,12 @@ class SrcLibDriver {
       print('{}');
     }
 
-    _processInput(startGraph);
+    if (testDataFile == null) {
+      _processInput(startGraph);
+    } else {
+      _logger.warning("using test data file ");
+      _processFile(testDataFile, startGraph);
+    }
   }
   
   @SubCommand(help: 'This command for human-readable info describing the '
